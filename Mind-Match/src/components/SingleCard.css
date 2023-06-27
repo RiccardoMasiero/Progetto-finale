@@ -1,0 +1,41 @@
+.card {
+    position: relative;
+}
+
+.card img {
+    width: 100%;
+    display: block;
+    border: 2px solid lightskyblue;
+    border-radius: 10px;
+}
+
+/* Parte davanti immagine 
+(-position: absolute) in relazione all'elemento card parente che ha (position: relative), quindi l'immagine sarà 
+sopra alla parte posteriore della carta però per fare in modo che si veda solo la parte
+posteriore della carta al posto di usare display null modifico il valore dell'asse Y
+di 90 gradi in modo da nasconderla
+*/
+.card .front {
+    transform: rotateY(90deg);
+    transition: all ease-in 0.2s;
+    position: absolute;
+}
+
+/* Quando la carta ha valore flipped = true il valore dell'asse Y diventa di 0 gradi 
+in modo che l'immagine si veda con un ritardo nella transizione di 0.2s */
+.flipped .front {
+    transform: rotateY(0deg);
+    transition-delay: 0.2s;
+}
+
+/* posteriore della carta cover */
+.card .back {
+    transition: all ease-in 0.2s;
+    transition-delay: 0.2s;
+}
+
+/* Quando la carta è flipped faccio ruotare di 90 gradi la parte posteriore in modo da nasconderla */
+.flipped .back {
+    transform: rotateY(90deg);
+    transition-delay: 0s;
+}
