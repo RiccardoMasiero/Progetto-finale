@@ -32,6 +32,7 @@ in modo che l'immagine si veda con un ritardo nella transizione di 0.2s */
 .card .back {
     transition: all ease-in 0.2s;
     transition-delay: 0.2s;
+    cursor: pointer;
 }
 
 /* Quando la carta è flipped faccio ruotare di 90 gradi la parte posteriore in modo da nasconderla */

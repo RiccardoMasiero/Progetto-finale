@@ -1,0 +1,52 @@
+.Main{
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    background: linear-gradient(-45deg, rgb(100, 15, 100),rgb(54, 13, 74),rgb(90, 16, 175),rgb(29, 2, 55),rgb(177, 59, 236));
+    background-size: 400% 400%;
+    animation: animate 15s ease infinite;
+    
+}
+
+@keyframes animate {
+    0%{
+        background-position: 0% 50%;
+    }
+    50%{
+        background-position: 100% 50%;
+    }
+    100%{
+        background-position: 0% 50%;
+    }
+    
+}
+
+.Main h1{
+    font-size: 80px;
+}
+
+.Main a {
+    display: flex;
+    margin-top: 50px;
+    width: 300px;
+    justify-content: center;
+    align-self: center;
+    flex-direction: column;
+    text-decoration: none;
+    border-radius: 20px;
+
+}
+
+.Main button{
+    border-radius: 15px;
+    transition: .6s;
+}
+
+.Main button:hover{
+    transform: scale(1.2);
+
+}
