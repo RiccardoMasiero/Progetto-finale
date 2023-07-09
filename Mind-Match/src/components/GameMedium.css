@@ -1,6 +1,6 @@
 .GameMedium {
     max-width: 600px;
-    margin: 40px auto;
+    margin: 20px auto;
 }
 button {
     background: none;
@@ -26,11 +26,26 @@ button:hover {
 }
 .card-grid-medium {
     display: grid;
+    justify-content: center;
+    align-items: center;
     grid-template-columns: repeat(6, 1fr);
     grid-template-rows: repeat(3, 1fr);
     grid-gap: 20px;
     margin-top: 40px;
 
+}
+
+.card-grid-medium img{
+    width: 110px;
+} 
+
+
+
+
+.stats{
+    display: flex;
+    justify-content: space-around;
+  
 }
 
 

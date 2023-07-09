@@ -8,8 +8,8 @@ export const Menu = () => {
             <h1>Mind Match</h1>
 
             <Link to= '/SelectDifficulty'><button>Play</button></Link>
-            <Link to= '/Game'><button>Previous games</button></Link>
-            <Link to= '/Game'><button>Exit</button></Link>
+            <Link to= '/Game'><button>Previous matches</button></Link>
+            <Link to= '#'><button>Exit</button></Link>
         </div>
     )
 }

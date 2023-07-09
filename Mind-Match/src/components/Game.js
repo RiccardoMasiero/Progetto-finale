@@ -1,6 +1,6 @@
 import './Game.css'
 import SingleCard from './SingleCard'
-import { useEffect, useState } from 'react'
+import { useEffect, useState,} from 'react'
 
 
 
@@ -22,6 +22,9 @@ export const Game = () => {
   const [choiceOne, setChoiceOne] = useState(null)
   const [choiceTwo, setChoiceTwo] = useState(null)
   const [disabled, setDisabled] = useState(false)
+  const [seconds, setSeconds] = useState(0)
+  const [minutes, setMinutes] = useState(0)
+  // const [endGame, setEndGame] = useState(false)
 
 
 
@@ -35,6 +38,10 @@ export const Game = () => {
     setChoiceTwo(null)
     setCards(shuffleCards)
     setTurns(0)
+    setSeconds(0)
+    setMinutes(0)
+    setSeconds (0)
+    setMinutes (0)
   }
 
   //Gestione delle selezioni
@@ -58,6 +65,7 @@ export const Game = () => {
             }
           })
         })
+        console.log(cardImmages.matched);
         resetTurn()//resetTurn per riportare il valore di setChoiceOne e setChoiceTwo a null. 
       } else {
         setTimeout(() => resetTurn(), 1000) // imposto un timeout di 1000 ms prima che le carte che non corrispondono si rigirino.
@@ -72,12 +80,39 @@ export const Game = () => {
     setChoiceTwo(null)
     setTurns(prevTurns => prevTurns + 1)
     setDisabled(false)
+
   }
 
   //Inizio nuova partita automaticamente
   useEffect(() => {
     shuffleCards()
   }, [])
+
+  // const gameEnd = () => {
+  //   let endGame = ( cardImmages.every.matched )
+  //   if (endGame === undefined){
+  //     setEndGame (true)
+  //   }
+  //   console.log(endGame);
+  // }
+
+ //Timer
+  useEffect(() => {
+    // if ( cardImmages.every((card) => card.flipped)) {
+    //   return;
+    // }
+    const interval = setInterval(() => {
+      if (seconds === 59) {
+        setSeconds(0);
+        setMinutes(minutes + 1);
+      } else {
+        setSeconds(seconds + 1);
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [seconds, minutes]);
+
+
 
 
 
@@ -96,10 +131,14 @@ export const Game = () => {
             handleChoice={handleChoice}
             flipped={card === choiceOne || card === choiceTwo || card.matched} //Per determinare se una carta è girata oppure no
             disabled={disabled}
+            // endGame= {gameEnd}
           />
         ))}
       </div>
-      <p>Turns: {turns}</p>
+      <div className='stats'>
+        <p>Turns: {turns}</p>
+        <p>Time: {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</p>
+      </div>
     </div>
   );
 }

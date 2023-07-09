@@ -1,6 +1,6 @@
 .Game {
   max-width: 600px;
-  margin: 40px auto;
+  margin: 20px auto;
 }
 button {
   background: none;
@@ -29,4 +29,10 @@ button:hover {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: 20px;
+}
+
+.stats{
+  display: flex;
+  justify-content: space-around;
+
 }
