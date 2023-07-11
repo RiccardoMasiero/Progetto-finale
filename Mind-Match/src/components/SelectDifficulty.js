@@ -12,6 +12,9 @@ export const SelectDifficulty = () => {
             <Link to= '/Game'><button>Easy</button></Link>
             <Link to= '/GameMedium'><button>Medium</button></Link>
             <Link to= '/GameHard'><button>Hard</button></Link>
+            <Link to= '/'><button>Back</button></Link>
+
+            
         </div>
     )
 }

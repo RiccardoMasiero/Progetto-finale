@@ -1,6 +1,8 @@
 import './Game.css'
 import SingleCard from './SingleCard'
 import { useEffect, useState,} from 'react'
+import {Link} from 'react-router-dom';
+
 
 
 
@@ -55,24 +57,53 @@ export const Game = () => {
     if (choiceOne && choiceTwo) {
       setDisabled(true) //Dopo aver selezionato 2 carte ho un piccolo momento in cui le altre carte non si possono selezionare finchè quelle selezionate non si girano di nuovo o rimangono girate.
 
+
+
       if (choiceOne.src === choiceTwo.src) { //Se le carte selezionate sono uguali,
         setCards(prevCards => { //Aggiorno lo stato delle carte prendendo il precedente stato delle carte
           return prevCards.map(card => { //Ritorno un nuovo array di carte con il metodo .map
-            if (card.src === choiceOne.src) { // Se card source e choiceOne source corrispondono
-              return { ...card, matched: true } // Ritorno un nuovo oggetto con lo spread sulla proprietà delle carte e modificio matched che diventa true
-            } else {
+            if (card.src === choiceOne.src) { // Se card source e choiceOne source corrispondono (che sia choiceOne o choiceTwo è uguale perché hanno card.src uguale)
+              return { ...card, matched: true} // Ritorno un nuovo oggetto con lo spread sulla proprietà delle carte e modificio matched che diventa true
+            }  else {
               return card //Se non corrispondono allora ritorno l'oggetto card senza alcun cambiamento.
             }
           })
-        })
-        console.log(cardImmages.matched);
+        })      
+
         resetTurn()//resetTurn per riportare il valore di setChoiceOne e setChoiceTwo a null. 
       } else {
         setTimeout(() => resetTurn(), 1000) // imposto un timeout di 1000 ms prima che le carte che non corrispondono si rigirino.
-      }
-    }
-  }, [choiceOne, choiceTwo]) //Ora sono in grado di tenere traccia delle carte che corrispondono e che di conseguenza hanno valore true
+      } 
 
+    }
+  }, [choiceOne, choiceTwo,]) //Ora sono in grado di tenere traccia delle carte che corrispondono e che di conseguenza hanno valore true
+
+  console.log(cards);
+
+  // quando si gira una carta e hai trovato una coppia
+  // imposti quella carta nel tuo array delle immagini come matched
+
+  // controlli inoltre se tutte le carte sono matched
+  // se si allora hai terminato la partita
+
+  //Fine partita
+  let counterMatched = 0;
+  let endGame = false
+
+  cards.forEach(card => {
+    if (card.matched) {
+      counterMatched++
+    }
+  });
+
+  if (counterMatched === 12) {
+    console.log('fine partita');
+    endGame = true
+
+    
+  }
+
+  console.log(endGame);
 
   //Reset delle selezioni e incremento turno
   const resetTurn = () => {
@@ -83,24 +114,18 @@ export const Game = () => {
 
   }
 
+
   //Inizio nuova partita automaticamente
   useEffect(() => {
     shuffleCards()
   }, [])
 
-  // const gameEnd = () => {
-  //   let endGame = ( cardImmages.every.matched )
-  //   if (endGame === undefined){
-  //     setEndGame (true)
-  //   }
-  //   console.log(endGame);
-  // }
 
  //Timer
   useEffect(() => {
-    // if ( cardImmages.every((card) => card.flipped)) {
-    //   return;
-    // }
+    if ( endGame === true ) {
+      return () => clearInterval();
+    }
     const interval = setInterval(() => {
       if (seconds === 59) {
         setSeconds(0);
@@ -110,8 +135,7 @@ export const Game = () => {
       }
     }, 1000);
     return () => clearInterval(interval);
-  }, [seconds, minutes]);
-
+  }, [seconds, minutes, endGame]);
 
 
 
@@ -120,6 +144,7 @@ export const Game = () => {
   return (
     //Ogni volta che clicco il bottone mi crea un array di carte disposte in ordine random.
     <div className="Game">
+      <Link to= '/'><button id='Home'>Home</button></Link>
       <h1>Mind Match</h1>
       <button onClick={shuffleCards}>New Game</button>
 
@@ -131,8 +156,9 @@ export const Game = () => {
             handleChoice={handleChoice}
             flipped={card === choiceOne || card === choiceTwo || card.matched} //Per determinare se una carta è girata oppure no
             disabled={disabled}
-            // endGame= {gameEnd}
+            endGame= {endGame}
           />
+          
         ))}
       </div>
       <div className='stats'>

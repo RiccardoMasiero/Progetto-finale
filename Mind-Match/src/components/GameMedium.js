@@ -1,6 +1,8 @@
 import './GameMedium.css'
 import SingleCard from './SingleCard'
 import { useEffect, useState } from 'react'
+import {Link} from 'react-router-dom';
+
 
 
 const cardImmages = [
@@ -71,6 +73,23 @@ export const GameMedium = () => {
     }
   }, [choiceOne, choiceTwo]) //Ora sono in grado di tenere traccia delle carte che corrispondono e che di conseguenza hanno valore true
 
+  //Fine partita
+  let counterMatched = 0;
+  let endGame = false
+
+  cards.forEach(card => {
+    if (card.matched) {
+      counterMatched++
+    }
+  });
+
+  if (counterMatched === 18) {
+    console.log('fine partita');
+    endGame = true
+  }
+
+  console.log(endGame);
+
 
   //Reset delle selezioni e incremento turno
   const resetTurn = () => {
@@ -88,9 +107,9 @@ export const GameMedium = () => {
 
   //Timer
   useEffect(() => {
-    // if (cardImmages.every.matched  === true) {
-    //   return 
-    // }
+    if ( endGame === true ) {
+      return () => clearInterval();
+    }
     const interval = setInterval(() => {
       if (seconds === 59) {
         setSeconds(0);
@@ -100,7 +119,7 @@ export const GameMedium = () => {
       }
     }, 1000);
     return () => clearInterval(interval);
-  }, [seconds, minutes]);
+  }, [seconds, minutes,endGame]);
 
 
 
@@ -108,6 +127,7 @@ export const GameMedium = () => {
   return (
     //Ogni volta che clicco il bottone mi crea un array di carte disposte in ordine random.
     <div className="GameMedium">
+      <Link to= '/'><button id='Home'>Home</button></Link>
       <h1>Mind Match</h1>
       <button onClick={shuffleCards}>New Game</button>
 

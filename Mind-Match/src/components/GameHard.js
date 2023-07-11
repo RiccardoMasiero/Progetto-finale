@@ -1,6 +1,8 @@
 import './GameHard.css'
 import SingleCard from './SingleCard'
 import { useEffect, useState } from 'react'
+import {Link} from 'react-router-dom';
+
 
 
 
@@ -77,6 +79,26 @@ export const GameHard = () => {
   }, [choiceOne, choiceTwo]) //Ora sono in grado di tenere traccia delle carte che corrispondono e che di conseguenza hanno valore true
 
 
+  //Fine partita
+  let counterMatched = 0;
+  let endGame = false
+
+  cards.forEach(card => {
+    if (card.matched) {
+      counterMatched++
+    }
+  });
+
+  if (counterMatched === 24) {
+    console.log('fine partita');
+    endGame = true
+    
+    
+  }
+
+  console.log(endGame);
+
+
   //Reset delle selezioni e incremento turno
   const resetTurn = () => {
     setChoiceOne(null)
@@ -93,9 +115,9 @@ export const GameHard = () => {
 
   //Timer
   useEffect(() => {
-    // if (cardImmages.every.flipped === true) {
-    //   return  () => clearInterval(interval);
-    // }
+    if ( endGame === true ) {
+      return () => clearInterval();
+    }
     const interval = setInterval(() => {
       if (seconds === 59) {
         setSeconds(0);
@@ -105,7 +127,7 @@ export const GameHard = () => {
       }
     }, 1000);
     return () => clearInterval(interval);
-  }, [seconds, minutes]);
+  }, [seconds, minutes,endGame]);
 
 
 
@@ -113,6 +135,7 @@ export const GameHard = () => {
   return (
     //Ogni volta che clicco il bottone mi crea un array di carte disposte in ordine random.
     <div className="GameHard">
+      <Link to= '/'><button id='Home'>Home</button></Link>
       <h1>Mind Match</h1>
       <button onClick={shuffleCards}>New Game</button>
 
