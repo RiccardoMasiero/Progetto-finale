@@ -5,6 +5,7 @@ import { SelectDifficulty } from "./components/SelectDifficulty"
 import { GameMedium } from "./components/GameMedium"
 import { GameHard } from "./components/GameHard"
 import { Routes, Route } from 'react-router-dom'
+import { PreviousMatches } from "./components/PreviousMatches";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path='SelectDifficulty' element={<SelectDifficulty/>}/>
         <Route path='GameMedium' element={<GameMedium/>}/>
         <Route path='GameHard' element={<GameHard/>}/>
+        <Route path='PreviousMatches' element={<PreviousMatches/>}/>
 
 
       </Routes>

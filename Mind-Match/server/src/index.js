@@ -1,13 +1,14 @@
-import  express  from "express";
+import express from "express";
+import cors from 'cors';
+import * as match from './matches-routes.mjs';
+import bodyParser from 'body-parser';
 const app = express()
-const port = 8000       
-
-import  bodyParser from 'body-parser'
+const port = 8000
+app.use(cors());
 app.use(bodyParser.json())
 
 
 
-import * as match from './matches-routes.mjs'
 
 app.get('/matches', match.getAll)
 app.get('/matches/:id', match.get)

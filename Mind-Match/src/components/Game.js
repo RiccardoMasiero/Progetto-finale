@@ -1,7 +1,8 @@
 import './Game.css'
 import SingleCard from './SingleCard'
-import { useEffect, useState,} from 'react'
-import {Link} from 'react-router-dom';
+import { useEffect, useState, } from 'react'
+import { Link } from 'react-router-dom';
+import axios from 'axios'
 
 
 
@@ -42,9 +43,11 @@ export const Game = () => {
     setTurns(0)
     setSeconds(0)
     setMinutes(0)
-    setSeconds (0)
-    setMinutes (0)
+    setSeconds(0)
+    setMinutes(0)
   }
+
+
 
   //Gestione delle selezioni
   const handleChoice = (card) => {
@@ -63,22 +66,25 @@ export const Game = () => {
         setCards(prevCards => { //Aggiorno lo stato delle carte prendendo il precedente stato delle carte
           return prevCards.map(card => { //Ritorno un nuovo array di carte con il metodo .map
             if (card.src === choiceOne.src) { // Se card source e choiceOne source corrispondono (che sia choiceOne o choiceTwo è uguale perché hanno card.src uguale)
-              return { ...card, matched: true} // Ritorno un nuovo oggetto con lo spread sulla proprietà delle carte e modificio matched che diventa true
-            }  else {
+              return { ...card, matched: true } // Ritorno un nuovo oggetto con lo spread sulla proprietà delle carte e modificio matched che diventa true
+            } else {
               return card //Se non corrispondono allora ritorno l'oggetto card senza alcun cambiamento.
             }
           })
-        })      
+        })
 
         resetTurn()//resetTurn per riportare il valore di setChoiceOne e setChoiceTwo a null. 
       } else {
         setTimeout(() => resetTurn(), 1000) // imposto un timeout di 1000 ms prima che le carte che non corrispondono si rigirino.
-      } 
+      }
 
     }
   }, [choiceOne, choiceTwo,]) //Ora sono in grado di tenere traccia delle carte che corrispondono e che di conseguenza hanno valore true
 
-  console.log(cards);
+
+
+
+
 
   // quando si gira una carta e hai trovato una coppia
   // imposti quella carta nel tuo array delle immagini come matched
@@ -100,10 +106,9 @@ export const Game = () => {
     console.log('fine partita');
     endGame = true
 
-    
+
   }
 
-  console.log(endGame);
 
   //Reset delle selezioni e incremento turno
   const resetTurn = () => {
@@ -121,9 +126,9 @@ export const Game = () => {
   }, [])
 
 
- //Timer
+  //Timer
   useEffect(() => {
-    if ( endGame === true ) {
+    if (endGame === true) {
       return () => clearInterval();
     }
     const interval = setInterval(() => {
@@ -138,13 +143,30 @@ export const Game = () => {
   }, [seconds, minutes, endGame]);
 
 
+  //POST statistiche matches
 
+  if (endGame === true) {
+    const postToDB = async () => {
+      try {
+        let postDate = new Date();
+        let res = await axios.post('http://localhost:8000/matches', {
+          date: postDate,
+          turns: turns,
+          time: `${minutes}:${seconds}`
+        })
+        console.log(res.status, res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    postToDB();
+  }
 
 
   return (
     //Ogni volta che clicco il bottone mi crea un array di carte disposte in ordine random.
     <div className="Game">
-      <Link to= '/'><button id='Home'>Home</button></Link>
+      <Link to='/'><button id='Home'>Home</button></Link>
       <h1>Mind Match</h1>
       <button onClick={shuffleCards}>New Game</button>
 
@@ -156,9 +178,9 @@ export const Game = () => {
             handleChoice={handleChoice}
             flipped={card === choiceOne || card === choiceTwo || card.matched} //Per determinare se una carta è girata oppure no
             disabled={disabled}
-            endGame= {endGame}
+            endGame={endGame}
           />
-          
+
         ))}
       </div>
       <div className='stats'>

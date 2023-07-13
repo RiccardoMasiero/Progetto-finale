@@ -1,7 +1,8 @@
 import './GameHard.css'
 import SingleCard from './SingleCard'
 import { useEffect, useState } from 'react'
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import axios from 'axios'
 
 
 
@@ -46,8 +47,8 @@ export const GameHard = () => {
     setChoiceTwo(null)
     setCards(shuffleCards)
     setTurns(0)
-    setSeconds (0)
-    setMinutes (0)
+    setSeconds(0)
+    setMinutes(0)
   }
 
   //Gestione delle selezioni
@@ -92,11 +93,10 @@ export const GameHard = () => {
   if (counterMatched === 24) {
     console.log('fine partita');
     endGame = true
-    
-    
+
+
   }
 
-  console.log(endGame);
 
 
   //Reset delle selezioni e incremento turno
@@ -105,7 +105,7 @@ export const GameHard = () => {
     setChoiceTwo(null)
     setTurns(prevTurns => prevTurns + 1)
     setDisabled(false)
-    
+
   }
 
   //Inizio nuova partita automaticamente
@@ -115,7 +115,7 @@ export const GameHard = () => {
 
   //Timer
   useEffect(() => {
-    if ( endGame === true ) {
+    if (endGame === true) {
       return () => clearInterval();
     }
     const interval = setInterval(() => {
@@ -127,7 +127,27 @@ export const GameHard = () => {
       }
     }, 1000);
     return () => clearInterval(interval);
-  }, [seconds, minutes,endGame]);
+  }, [seconds, minutes, endGame]);
+
+
+  //POST statistiche matches
+
+  if (endGame === true) {
+    const postToDB = async () => {
+      try {
+        let postDate = new Date();
+        let res = await axios.post('http://localhost:8000/matches', {
+          date: postDate,
+          turns: turns,
+          time: `${minutes}:${seconds}`
+        })
+        console.log(res.status, res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    postToDB();
+  }
 
 
 
@@ -135,7 +155,7 @@ export const GameHard = () => {
   return (
     //Ogni volta che clicco il bottone mi crea un array di carte disposte in ordine random.
     <div className="GameHard">
-      <Link to= '/'><button id='Home'>Home</button></Link>
+      <Link to='/'><button id='Home'>Home</button></Link>
       <h1>Mind Match</h1>
       <button onClick={shuffleCards}>New Game</button>
 

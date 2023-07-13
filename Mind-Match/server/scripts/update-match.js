@@ -8,5 +8,5 @@ async function call(id) {
     })
     console.log(res.status, res.data)
 }
-  
+
 call(process.argv[2]) 
