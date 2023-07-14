@@ -28,7 +28,7 @@ export const PreviousMatches = () => {
             {/* Per ovviare al problema della doppia post all'interno del db con .filter prendo solo gli elementi dell'oggetto matches che hanno
             chiave dispari quindi prendo le statistiche di ogni partita un unica volta, utilizzo .sort per ordinare in ordine decrescente le
             varie partite, ed infine per ogni elemento, viene creato <li> che contiene la rappresentazione JSON dell'elemento. */}
-            <ol>
+            <ol reversed>
                 {Object.keys(matches).filter(key => key % 2 !== 0).sort((a, b) => b - a).map(key => <li>
                     Date:{JSON.stringify(matches[key].date)}{'___'}
                     Turns:{JSON.stringify(matches[key].turns)}{'___'}
